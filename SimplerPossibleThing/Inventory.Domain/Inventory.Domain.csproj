@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Bus.Lib\Bus.Lib.csproj" />
+    <ProjectReference Include="..\Infrastructure\Crud.Lib\Crud.Lib.csproj" />
+    <ProjectReference Include="..\Infrastrucure\Es.Lib\Es.Lib.csproj" />
+    <ProjectReference Include="..\Inventory.Shared\Inventory.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

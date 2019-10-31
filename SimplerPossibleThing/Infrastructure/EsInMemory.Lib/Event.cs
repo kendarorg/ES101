@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EsInMemory.Lib
 {
-    public class Event
+    internal class Event
     {
         public Guid Id { get; set; }
         public long Version { get; set; }

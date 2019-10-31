@@ -14,20 +14,20 @@ namespace EsInMemory.Lib
     public class InMemoryEventStore : IEventStore
     {
         private readonly IBus _bus;
-        private readonly ConcurrentDictionary<Guid, List<Event>> _storage;
+        private readonly ConcurrentDictionary<Guid, ConcurrentDictionary<int, Event>> _storage;
 
         public InMemoryEventStore(IBus bus)
         {
             _bus = bus;
-            _storage = new ConcurrentDictionary<Guid, List<Event>>();
+            _storage = new ConcurrentDictionary<Guid, ConcurrentDictionary<int, Event>>();
         }
 
-        public T GetById<T>(T newRoot, Guid inventoryItemId) where T:AggregateRoot
+        public T GetById<T>(T newRoot, Guid inventoryItemId) where T : AggregateRoot
         {
-            if (!_storage.ContainsKey(inventoryItemId)) return default(T);
+            if (!_storage.ContainsKey(inventoryItemId)) return default;
             var allEvents = _storage[inventoryItemId]
-                .OrderBy(a => a.Version)
-                .Select(a => (IEvent)newRoot.Deserialize(a.Type, a.Data));
+                .OrderBy(a => a.Key)
+                .Select(a => (IEvent)newRoot.Deserialize(a.Value.Type, a.Value.Data));
             newRoot.LoadsFromHistory(allEvents);
             return newRoot;
         }
@@ -38,13 +38,13 @@ namespace EsInMemory.Lib
             // otherwise -> create empty dictionary
             var eventDescriptors = _storage.GetOrAdd(aggregate.Id, (key) =>
             {
-                return new List<Event>();
+                return new ConcurrentDictionary<int, Event>();
             });
 
 
             // check whether latest event version matches current aggregate version
-            // otherwise -> throw exception
-            if (eventDescriptors.Count > 1 && eventDescriptors[eventDescriptors.Count - 1].Version != expectedVersion && expectedVersion != -1)
+            // otherwise -> throw exception 
+            if (eventDescriptors.Count > 1 && VersionMatchesOrNewObject(expectedVersion, eventDescriptors))
             {
                 throw new ConcurrencyException();
             }
@@ -57,18 +57,27 @@ namespace EsInMemory.Lib
                 @event.Version = i;
 
                 // push event to the event descriptors list for current aggregate
-                eventDescriptors.Add(new Event
+                if(!eventDescriptors.TryAdd(i, new Event
                 {
                     Id = aggregate.Id,
                     Data = JsonConvert.SerializeObject(@event),
                     Type = @event.GetType().Name,
                     Version = i
-                });
+                }))
+                {
+                    throw new ConcurrencyException();
+                }
 
 
                 // publish current event to the bus for further processing by subscribers
                 _bus.Send(@event);
             }
+        }
+
+        private static bool VersionMatchesOrNewObject(int expectedVersion, 
+            ConcurrentDictionary<int,Event> eventDescriptors)
+        {
+            return eventDescriptors[eventDescriptors.Count - 1].Version != expectedVersion && expectedVersion != -1;
         }
     }
 }

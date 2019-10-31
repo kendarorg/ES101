@@ -86,7 +86,7 @@ namespace InMemory.Bus
                     var clone = Clone(message);
                     action(clone);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Nop
                 }

@@ -9,78 +9,20 @@ namespace Es.Lib
 {
     public abstract class AggregateRoot
     {
-        #region Event translation and deserialization
-        private class MessageType
-        {
-            public Type Type { get; set; }
-            public MethodInfo Method { get; set; }
-        }
-        private static ConcurrentDictionary<Type, Dictionary<string, MessageType>> Translators = new ConcurrentDictionary<Type, Dictionary<string, MessageType>>();
-        private readonly Dictionary<string, MessageType> _translators;
-
-
-        private Dictionary<string, MessageType> FindAndStoreAllApplyEventMethods(Type thisType)
-        {
-            var result = new Dictionary<string, MessageType>();
-            foreach (var method in thisType
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
-                .Where(a => a.Name == "Apply" && a.GetParameters().Length == 1))
-            {
-                var methodType = method.GetParameters()[0].ParameterType;
-                result[methodType.Name] = new MessageType
-                {
-                    Method = method,
-                    Type = methodType
-                };
-            }
-            var hm = HandledMessages;
-            for (int i = 0; i < hm.Count; i++)
-            {
-                if (!result.ContainsKey(hm[i].Name)) {
-                    result[hm[i].Name] = new MessageType
-                    {
-                        Type = hm[i]
-                    };
-                }
-            }
-
-            return result;
-        }
+        private readonly Dictionary<string, Action<object>> _actions = new Dictionary<string, Action<object>>();
+        private readonly Dictionary<string, Type> _translations = new Dictionary<string, Type>();
         
-        public object Deserialize(string type, string data)
-        {
-            var messageType = _translators[type];
-            return JsonConvert.DeserializeObject(data, messageType.Type);
-        }
-
-        private void InvokeApply(IEvent @object)
-        {
-            if (_translators.ContainsKey(@object.GetType().Name))
-            {
-                var messageType = _translators[@object.GetType().Name];
-                if (messageType.Method != null)
-                {
-                    messageType.Method.Invoke(this, new[] { @object });
-                }
-            }
-        }
-
-        #endregion
-
         private readonly List<IEvent> _changes = new List<IEvent>();
 
         public abstract Guid Id { get; }
         public int Version { get; internal set; }
 
-        protected abstract List<Type> HandledMessages { get; }
-
         protected AggregateRoot()
         {
-            _translators = Translators.GetOrAdd(this.GetType(), (type) =>
-            {
-                return FindAndStoreAllApplyEventMethods(this.GetType());
-            });
+            Initialize();
         }
+
+        protected abstract void Initialize();
 
         public IEnumerable<IEvent> GetUncommittedChanges()
         {
@@ -105,8 +47,31 @@ namespace Es.Lib
         // push atomic aggregate changes to local history for further processing (objectStore.Saveobjects)
         private void ApplyChange(IEvent @object, bool isNew)
         {
-            InvokeApply(@object);
+            if (_actions.ContainsKey(@object.GetType().Name))
+            {
+                _actions[@object.GetType().Name](@object);
+            }
             if (isNew) _changes.Add(@object);
+        }
+
+        protected void RegisterApply<T>(Action<T> action)
+        {
+            _actions[typeof(T).Name]= (@event) =>
+            {
+                action((T)@event);
+            };
+            _translations[typeof(T).Name] = typeof(T);
+        }
+
+        protected void RegisterEvent<T>()
+        {
+            _translations[typeof(T).Name] = typeof(T);
+        }
+
+        public object Deserialize(string typeName,string data)
+        {
+            var type = _translations[typeName];
+            return JsonConvert.DeserializeObject(data, type);
         }
     }
 }

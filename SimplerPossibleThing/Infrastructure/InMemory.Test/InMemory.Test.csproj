@@ -68,8 +68,10 @@
     <Compile Include="Bus\InMemoryBusTest.cs" />
     <Compile Include="Bus\FirstMessage.cs" />
     <Compile Include="Bus\SecondMessage.cs" />
-    <Compile Include="Es\ESTest.cs" />
+    <Compile Include="Es\AggregateRootTest.cs" />
     <Compile Include="Es\TestAggregate.cs" />
+    <Compile Include="Es\TestItemCreated.cs" />
+    <Compile Include="Es\TestItemNameAssigned.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Entity.cs" />
     <Compile Include="Repository\InMemoryRepositoryTest.cs" />

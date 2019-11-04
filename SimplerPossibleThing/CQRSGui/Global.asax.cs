@@ -1,4 +1,6 @@
-﻿using EsInMemory.Lib;
+﻿using Bus;
+using Es.Lib;
+using EsInMemory.Lib;
 using InMemory.Bus;
 using InMemory.Crud;
 using Inventory.Domain;
@@ -26,11 +28,11 @@ namespace CQRSGui
 
             AreaRegistration.RegisterAllAreas();
 
-            
-            var bus = new InMemoryBusRunning();
+            IEsFactory esFactory = EsFactory.Factory;
+            IBus bus = new InMemoryBusRunning();
 
-            var storage = new InMemoryEventStore(bus);
-            var commands = new InventoryCommandHandlers(bus,storage);
+            IEventStore storage = new InMemoryEventStore(bus, esFactory);
+            var commands = new InventoryCommandHandlers(bus, storage);
             ServiceLocator.InventoryItemDetailViewRepo = new InMemoryRepository<InventoryItemDetailsDto>();
             var detail = new InventoryItemDetails(bus, ServiceLocator.InventoryItemDetailViewRepo);
 

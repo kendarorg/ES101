@@ -11,19 +11,11 @@ namespace InMemory.Es
     {
         private Guid _id;
         public override Guid Id { get { return _id; } }
-
-        protected override void Initialize()
-        {
-            RegisterApply<TestItemCreated>(Apply);
-            RegisterEvent<TestItemNameAssigned>();
-        }
-
-        public TestAggregate() : base()
+        public TestAggregate()
         {
 
         }
-
-        public TestAggregate(Guid id) : base()
+        public TestAggregate(Guid id)
         {
             ApplyChange(new TestItemCreated(id));
         }
@@ -34,7 +26,7 @@ namespace InMemory.Es
             ApplyChange(new TestItemNameAssigned(_id, newName));
         }
 
-        private void Apply(TestItemCreated @event)
+        public void Apply(TestItemCreated @event)
         {
             _id = @event.Id;
         }

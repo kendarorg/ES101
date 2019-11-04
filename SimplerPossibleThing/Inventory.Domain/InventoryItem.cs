@@ -15,22 +15,12 @@ namespace Inventory.Domain
         {
             get { return _id; }
         }
-
-        protected override void Initialize()
+        public InventoryItem()
         {
-            RegisterApply<InventoryItemCreated>(Apply);
-            RegisterApply<InventoryItemDeactivated>(Apply);
-            RegisterEvent<InventoryItemRenamed>();
-            RegisterEvent<ItemsCheckedInToInventory>();
-            RegisterEvent<ItemsRemovedFromInventory>();
+
         }
 
-        public InventoryItem() : base()
-        {
-            
-        }
-
-        public InventoryItem(Guid id, string name) : base()
+        public InventoryItem(Guid id, string name)
         {
             ApplyChange(new InventoryItemCreated(id, name));
         }

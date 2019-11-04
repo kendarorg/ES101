@@ -14,11 +14,13 @@ namespace EsInMemory.Lib
     public class InMemoryEventStore : IEventStore
     {
         private readonly IBus _bus;
+        private readonly IEsFactory _esFactory;
         private readonly ConcurrentDictionary<Guid, ConcurrentDictionary<int, Event>> _storage;
 
-        public InMemoryEventStore(IBus bus)
+        public InMemoryEventStore(IBus bus,IEsFactory esFactory)
         {
             _bus = bus;
+            _esFactory = esFactory;
             _storage = new ConcurrentDictionary<Guid, ConcurrentDictionary<int, Event>>();
         }
 
@@ -27,7 +29,7 @@ namespace EsInMemory.Lib
             if (!_storage.ContainsKey(inventoryItemId)) return default;
             var allEvents = _storage[inventoryItemId]
                 .OrderBy(a => a.Key)
-                .Select(a => (IEvent)newRoot.Deserialize(a.Value.Type, a.Value.Data));
+                .Select(a => (IEvent)_esFactory.DeserializeMessage(a.Value.Type, a.Value.Data));
             newRoot.LoadsFromHistory(allEvents);
             return newRoot;
         }
@@ -55,13 +57,13 @@ namespace EsInMemory.Lib
             {
                 i++;
                 @event.Version = i;
-
+                var serializedEvent = _esFactory.SerializeMessage(@event);
                 // push event to the event descriptors list for current aggregate
                 if(!eventDescriptors.TryAdd(i, new Event
                 {
                     Id = aggregate.Id,
-                    Data = JsonConvert.SerializeObject(@event),
-                    Type = @event.GetType().Name,
+                    Data = serializedEvent.Data,
+                    Type = serializedEvent.Type,
                     Version = i
                 }))
                 {

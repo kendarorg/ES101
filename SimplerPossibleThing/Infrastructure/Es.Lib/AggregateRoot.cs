@@ -11,7 +11,6 @@ namespace Es.Lib
     {
         
         private readonly List<IEvent> _changes = new List<IEvent>();
-        public IEsFactory EsTestFactory { get; set; }
 
         public abstract Guid Id { get; }
         public int Version { get; internal set; }
@@ -33,7 +32,10 @@ namespace Es.Lib
 
         public void LoadsFromHistory(IEnumerable<IEvent> history)
         {
-            foreach (var e in history) ApplyChange(e, false);
+            foreach (var e in history)
+            {
+                ApplyChange(e, false);
+            }
         }
 
         protected void ApplyChange(IEvent @object)
@@ -44,14 +46,7 @@ namespace Es.Lib
         // push atomic aggregate changes to local history for further processing (objectStore.Saveobjects)
         private void ApplyChange(IEvent @object, bool isNew)
         {
-            if (EsTestFactory != null)
-            {
-                EsTestFactory.Apply(this, @object);
-            }
-            else
-            {
-                EsFactory.Factory.Apply(this, @object);
-            }
+            EsFactory.Factory.Apply(this, @object);
             if (isNew) _changes.Add(@object);
         }
     }

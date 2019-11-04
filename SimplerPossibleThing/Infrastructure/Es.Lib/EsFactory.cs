@@ -11,18 +11,23 @@ namespace Es.Lib
     {
         private readonly Dictionary<string, Type> _messagesTranslations = new Dictionary<string, Type>();
         private readonly Dictionary<Type, Dictionary<Type, MethodInfo>> _applyMethods = new Dictionary<Type, Dictionary<Type, MethodInfo>>();
-        private static EsFactory _factory;
+        private static IEsFactory _factory;
         private static object _lock = new object();
 
         public static IEsFactory Factory
         {
+            set
+            {
+                _factory = value;
+            }
             get
             {
                 if (_factory != null) return _factory;
                 lock (_lock)
                 {
-                    _factory = new EsFactory();
-                    _factory.ScanAssemblies();
+                    var factory = new EsFactory();
+                    factory.ScanAssemblies();
+                    _factory = factory;
                 }
                 return _factory;
             }

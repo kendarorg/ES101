@@ -84,7 +84,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastrucure\Es.Lib\Es.Lib.csproj">
+    <ProjectReference Include="..\..\Infrastructure\Es.Lib\Es.Lib.csproj">
       <Project>{d9efafc9-1930-46c7-a961-77c914b9c643}</Project>
       <Name>Es.Lib</Name>
     </ProjectReference>

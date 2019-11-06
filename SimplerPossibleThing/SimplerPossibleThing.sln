@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Domain", "ES-02\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Test", "ES-01\Inventory.Test\Inventory.Test.csproj", "{42185633-143F-4898-90CB-196BA568E862}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Test", "ES-02\Inventory.Test\Inventory.Test.csproj", "{B7CAF2A3-175C-4DEA-80BA-FC71E36C9BF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{42185633-143F-4898-90CB-196BA568E862}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42185633-143F-4898-90CB-196BA568E862}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42185633-143F-4898-90CB-196BA568E862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7CAF2A3-175C-4DEA-80BA-FC71E36C9BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7CAF2A3-175C-4DEA-80BA-FC71E36C9BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7CAF2A3-175C-4DEA-80BA-FC71E36C9BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7CAF2A3-175C-4DEA-80BA-FC71E36C9BF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{50687E71-F68D-4A98-9EC7-141F033274E0} = {FAB0DF13-DE4B-4F6F-9158-7A3145B31DCA}
 		{DE7A6DE5-33A9-481E-8C7C-591A2F9E2006} = {FAB0DF13-DE4B-4F6F-9158-7A3145B31DCA}
 		{42185633-143F-4898-90CB-196BA568E862} = {7390CD33-0012-48B0-8CA7-74EE44924542}
+		{B7CAF2A3-175C-4DEA-80BA-FC71E36C9BF8} = {FAB0DF13-DE4B-4F6F-9158-7A3145B31DCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2B747835-7411-45AA-B819-F4BA10316D55}

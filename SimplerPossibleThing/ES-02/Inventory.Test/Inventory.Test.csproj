@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{42185633-143F-4898-90CB-196BA568E862}</ProjectGuid>
+    <ProjectGuid>{B7CAF2A3-175C-4DEA-80BA-FC71E36C9BF8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Inventory.Test</RootNamespace>
@@ -45,12 +45,18 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InventoryAggregateRootTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Bus.Lib\Bus.Lib.csproj">
@@ -82,20 +88,13 @@
       <Name>TestUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj">
-      <Project>{dc605da0-e29d-4652-bac2-4cd61c046065}</Project>
+      <Project>{de7a6de5-33a9-481e-8c7c-591a2f9e2006}</Project>
       <Name>Inventory.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Inventory.Projections\Inventory.Projections.csproj">
-      <Project>{4f772adb-2013-407e-a4dc-e5a71bee66f9}</Project>
-      <Name>Inventory.Projections</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Inventory.Shared\Inventory.Shared.csproj">
-      <Project>{1c4506a3-1da9-4dc2-98d6-2572cc5eb8cb}</Project>
+      <Project>{50687e71-f68d-4a98-9ec7-141f033274e0}</Project>
       <Name>Inventory.Shared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

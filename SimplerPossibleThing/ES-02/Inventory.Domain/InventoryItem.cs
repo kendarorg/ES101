@@ -89,7 +89,7 @@ namespace Inventory.Domain
 
         private void Apply(ItemsRemovedFromInventory e)
         {
-            _memento.Items += e.Count;
+            _memento.Items -= e.Count;
             _memento.Version++;
         }
 

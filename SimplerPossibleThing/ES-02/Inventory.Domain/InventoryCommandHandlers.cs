@@ -2,6 +2,7 @@
 using Crud;
 using Es.Lib;
 using Inventory.Shared;
+using Inventory.Shared.Commands;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Inventory.Domain
             _bus.RegisterQueue<RemoveItemsFromInventory>(Handle);
             _bus.RegisterQueue<CheckInItemsToInventory>(Handle);
             _bus.RegisterQueue<RenameInventoryItem>(Handle);
+            _bus.RegisterQueue<CreateInventorySnapshot>(Handle);
         }
 
         public void Handle(CreateInventoryItem message)
@@ -55,6 +57,13 @@ namespace Inventory.Domain
         {
             var item = _repository.GetById(new InventoryItem(), message.InventoryItemId);
             item.ChangeName(message.NewName);
+            _repository.Save(item, message.OriginalVersion);
+        }
+
+        private void Handle(CreateInventorySnapshot message)
+        {
+            var item = _repository.GetById(new InventoryItem(), message.InventoryItemId);
+            item.SaveSnapshot();
             _repository.Save(item, message.OriginalVersion);
         }
     }

@@ -2,6 +2,6 @@
 {
     public interface IOptimisticEntity:IEntity
     {
-        long Version { get; set; }
+        int Version { get; set; }
     }
 }

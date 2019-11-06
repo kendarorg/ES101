@@ -4,6 +4,6 @@ namespace InMemory.Repository
 {
     public class OptimisticEntity :Entity, IOptimisticEntity
     {
-        public long Version { get; set; }
+        public int Version { get; set; }
     }
 }

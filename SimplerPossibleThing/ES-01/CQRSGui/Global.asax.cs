@@ -31,7 +31,7 @@ namespace CQRSGui
             IEsFactory esFactory = EsFactory.Factory;
             IBus bus = new InMemoryBusRunning();
 
-            IEventStore storage = new InMemoryEventStore(bus, esFactory);
+            IEventStore storage = new InMemoryEventStore(bus, esFactory,null);
             var commands = new InventoryCommandHandlers(bus, storage);
             ServiceLocator.InventoryItemDetailViewRepo = new InMemoryRepository<InventoryItemDetailsDto>();
             var detail = new InventoryItemDetails(bus, ServiceLocator.InventoryItemDetailViewRepo);

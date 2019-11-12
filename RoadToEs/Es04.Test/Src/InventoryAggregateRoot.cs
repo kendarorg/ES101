@@ -1,24 +1,17 @@
 ﻿using Es01.Test.Src.Events;
-using Es02.Test.Infrastructure;
 using Es02.Test.Src.Events;
-using Es03.Test.Infrastructure;
+using Es04.Test.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Es01.Test.Src
 {
-    public class InventoryAggregateRoot : IAggregateRoot
+    public class InventoryAggregateRoot : AggregateRoot
     {
-        private int _version = -1;
-        private List<object> _uncommittedChanges = new List<object>();
         
         public InventoryAggregateRoot(Guid id, string name)
         {
             Id = id;
-            _uncommittedChanges.Add(new InventoryItemCreated(id, name));
+            ApplyChange(new InventoryItemCreated(id, name));
         }
 
         public InventoryAggregateRoot()
@@ -28,33 +21,9 @@ namespace Es01.Test.Src
 
         public void ChangeName(string newName)
         {
-            _uncommittedChanges.Add(new ItemNameModified(Id, newName));
+            ApplyChange(new ItemNameModified(Id, newName));
         }
 
-        public Guid Id { get; private set; }
-        public int Version { get { return _version; } }
-
-        public List<object> GetUncommittedChanges()
-        {
-            return _uncommittedChanges;
-        }
-
-        public void ClearUncommittedChanges()
-        {
-            _uncommittedChanges.Clear();
-        }
-
-        public void LoadFromHistory(IEnumerable<object> events)
-        {
-            foreach (var evt in events)
-            {
-                _version++;
-                if (evt is InventoryItemCreated)
-                {
-                    Apply((InventoryItemCreated)evt);
-                }
-            }
-        }
 
         private void Apply(InventoryItemCreated evt)
         {

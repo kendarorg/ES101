@@ -1,9 +1,6 @@
 ﻿using Es01.Test.Src.Commands;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Es01.Test.Src
 {

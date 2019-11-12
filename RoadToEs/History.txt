@@ -34,3 +34,7 @@ Es04.Test
 		All commands will contain an "expected version" that is the version for which was read the aggregate
 		The aggregate will contain a version field internal
 		When the wrong version is required an exception will be thrown
+	T08ExtractingBaseAggregate
+		Will refactor the aggregate extracting the common behaviour
+		Will search for all apply methods with reflection to make it a common thing
+		We will  collapse the IAggregateRoot interface into the AggregateRoot bas

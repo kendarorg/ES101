@@ -1,10 +1,7 @@
-﻿using Es03.Test.Infrastructure;
-using Es04.Test.Infrastructure;
+﻿using Es04.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Es02.Test.Infrastructure
 {
@@ -39,7 +36,7 @@ namespace Es02.Test.Infrastructure
         }
 
 
-        public T GetById<T>(Guid id) where T : IAggregateRoot
+        public T GetById<T>(Guid id) where T : AggregateRoot
         {
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));
             var events = Events.Where(e => e.Id == id).Select(ev=>ev.Data);

@@ -1,15 +1,10 @@
 ﻿using Es01.Test.Src.Commands;
 using Es02.Test.Infrastructure;
 using Es02.Test.Src.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Es01.Test.Src
 {
-    
+
     public class InventoryCommandHandler
     {
         private readonly EventStore _eventStore;

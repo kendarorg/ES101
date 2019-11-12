@@ -49,10 +49,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\AggregateRoot.cs" />
     <Compile Include="Infrastructure\ConcurrencyException.cs" />
     <Compile Include="Infrastructure\EventDescriptor.cs" />
     <Compile Include="Infrastructure\EventStore.cs" />
-    <Compile Include="Infrastructure\IAggregateRoot.cs" />
     <Compile Include="Src\Commands\CreateInventoryITem.cs" />
     <Compile Include="Src\Commands\ModifyItemName.cs" />
     <Compile Include="Src\Events\InventoryItemCreated.cs" />

@@ -1,12 +1,8 @@
 ﻿using Es01.Test.Src.Events;
-using Es02.Test.Infrastructure;
 using Es02.Test.Src.Events;
 using Es03.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Es01.Test.Src
 {

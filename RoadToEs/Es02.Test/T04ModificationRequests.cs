@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Es01.Test.Src;
-using Es01.Test.Src.Commands;
 using Es01.Test.Src.Events;
-using Es02.Test.Infrastructure;
 using Es02.Test.Src.Commands;
 using Es02.Test.Src.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

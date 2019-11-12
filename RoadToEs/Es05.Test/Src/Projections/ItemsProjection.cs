@@ -45,5 +45,10 @@ namespace Es05.Test.Src.Projections
         {
             return _items.Values;
         }
+
+        public ItemsProjectionEntity GetById(Guid id)
+        {
+            return _items[id];
+        }
     }
 }

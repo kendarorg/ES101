@@ -1,5 +1,6 @@
 ﻿using E05.Test.Infrastructure;
 using Es04.Test.Infrastructure;
+using Es05.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,15 @@ namespace Es02.Test.Infrastructure
             _bus = bus;
         }
 
-        public void Save(Guid id, IEnumerable<object> events,int expectedVersion)
+        public void Save(Guid id, IEnumerable<IEvent> events, int expectedVersion)
         {
             var lastStoredEvent = Events
                 .Where(e => e.Id == id)
                 .OrderByDescending(ev => ev.Version)
                 .FirstOrDefault();
-            var lastVersion = lastStoredEvent == null ? -1 : lastStoredEvent.Version;
-            if(lastVersion!= expectedVersion)
+            var lastStoredVersion = lastStoredEvent == null ? -1 : lastStoredEvent.Version;
+            var lastEventVersion = events.First().Version - 1;
+            if (lastEventVersion != lastStoredVersion || expectedVersion != lastStoredVersion)
             {
                 throw new ConcurrencyException();
             }
@@ -33,7 +35,7 @@ namespace Es02.Test.Infrastructure
             {
                 Events.Add(new EventDescriptor
                 {
-                    Version = ++lastVersion,
+                    Version = @event.Version,
                     Id = id,
                     Data = @event
                 });
@@ -45,7 +47,7 @@ namespace Es02.Test.Infrastructure
         public T GetById<T>(Guid id) where T : AggregateRoot
         {
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));
-            var events = Events.Where(e => e.Id == id).Select(ev=>ev.Data);
+            var events = Events.Where(e => e.Id == id).Select(ev => (IEvent)ev.Data);
             aggregateRoot.LoadFromHistory(events);
             return aggregateRoot;
         }

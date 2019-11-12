@@ -8,9 +8,15 @@ using System.Threading.Tasks;
 
 namespace Es05.Test.Src.Projections
 {
+    public class ItemsProjectionEntity
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public int Version { get; set; }
+    }
     public class ItemsProjection
     {
-        private Dictionary<Guid, string> _items = new Dictionary<Guid, string>();
+        private Dictionary<Guid, ItemsProjectionEntity> _items = new Dictionary<Guid, ItemsProjectionEntity>();
         public ItemsProjection(E05.Test.Infrastructure.Bus bus)
         {
             bus.RegisterTopic<InventoryItemCreated>(Handle);
@@ -19,17 +25,25 @@ namespace Es05.Test.Src.Projections
 
         private void Handle(ItemNameModified @event)
         {
-            _items[@event.Id] = @event.NewName;
+            if (_items[@event.Id].Version <= @event.Version)
+            {
+                _items[@event.Id].Name = @event.NewName;
+                _items[@event.Id].Version = @event.Version;
+            }
         }
 
         private void Handle(InventoryItemCreated @event)
         {
-            _items[@event.Id] = @event.Name;
+            _items[@event.Id] = new ItemsProjectionEntity();
+            _items[@event.Id].Id = @event.Id;
+            _items[@event.Id].Version = @event.Version;
+            _items[@event.Id].Name = @event.Name;
+
         }
 
-        public IEnumerable<KeyValuePair<Guid,string>> GetAll()
+        public IEnumerable<ItemsProjectionEntity> GetAll()
         {
-            return _items;
+            return _items.Values;
         }
     }
 }

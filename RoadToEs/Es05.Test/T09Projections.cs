@@ -16,7 +16,7 @@ namespace Es05.Test
     public class T09Projections
     {
         [TestMethod]
-        public void ShouldSendDataViaBus()
+        public void ShouldPopulateProjections()
         {
             //Given
             var events = new List<object>();
@@ -35,8 +35,9 @@ namespace Es05.Test
             var items = projection.GetAll().ToList();
             Assert.AreEqual(1, items.Count);
             var kvp = items[0];
-            Assert.AreEqual(id, kvp.Key);
-            Assert.AreEqual(newName, kvp.Value);
+            Assert.AreEqual(id, kvp.Id);
+            Assert.AreEqual(newName, kvp.Name);
+            Assert.AreEqual(1, kvp.Version);
         }
     }
 }

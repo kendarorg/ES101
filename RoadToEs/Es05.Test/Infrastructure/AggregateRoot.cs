@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Es05.Test.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +9,7 @@ namespace Es04.Test.Infrastructure
     public class AggregateRoot
     {
         private int _version = -1;
-        private List<object> _uncommittedChanges = new List<object>();
+        private List<IEvent> _uncommittedChanges = new List<IEvent>();
         private MethodInfo[] _allApplyMethods;
 
         public Guid Id { get; protected set; }
@@ -34,7 +35,7 @@ namespace Es04.Test.Infrastructure
             }
         }
 
-        public List<object> GetUncommittedChanges()
+        public List<IEvent> GetUncommittedChanges()
         {
             return _uncommittedChanges;
         }
@@ -44,21 +45,23 @@ namespace Es04.Test.Infrastructure
             _uncommittedChanges.Clear();
         }
 
-        protected void ApplyChange(object @event,bool isNew = true)
+        protected void ApplyChange(IEvent @event,bool isNew = true)
         {
             InvokeApplyForEvent(@event);
             if (isNew)
             {
+                _version++;
+                @event.Version = _version;
                 _uncommittedChanges.Add(@event);
             }
         }
 
-        public void LoadFromHistory(IEnumerable<object> events)
+        public void LoadFromHistory(IEnumerable<IEvent> events)
         {
             
             foreach (var @event in events)
             {
-                _version++;
+                _version = @event.Version;
                 InvokeApplyForEvent(@event);
             }
         }

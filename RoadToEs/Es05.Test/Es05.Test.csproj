@@ -59,6 +59,7 @@
     <Compile Include="Infrastructure\HandlerAlreadyUsedException.cs" />
     <Compile Include="Infrastructure\Bus.cs" />
     <Compile Include="Infrastructure\IEvent.cs" />
+    <Compile Include="T0ABusTest.cs" />
     <Compile Include="Src\Commands\CreateInventoryITem.cs" />
     <Compile Include="Src\Commands\ModifyItemName.cs" />
     <Compile Include="Src\Events\InventoryItemCreated.cs" />

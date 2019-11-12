@@ -37,4 +37,11 @@ Es04.Test
 		All commands will contain an "expected version" that is the version for which was read the aggregate
 		The aggregate will contain a version field internal
 		When the wrong version is required an exception will be thrown
+Es05.Test
+	T08TheBus
+		Will introduce a BUS
+		Will connect all parts with a bus
+	T09TheProjection
+
+
 		

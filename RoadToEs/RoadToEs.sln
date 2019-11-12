@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Es03.Test", "Es03.Test\Es03
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Es04.Test", "Es04.Test\Es04.Test.csproj", "{3AC05624-EF61-42DF-A9FF-77A882590373}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Es05.Test", "Es05.Test\Es05.Test.csproj", "{FCF2E835-AC43-4E35-9207-C0340953C22F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3AC05624-EF61-42DF-A9FF-77A882590373}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AC05624-EF61-42DF-A9FF-77A882590373}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AC05624-EF61-42DF-A9FF-77A882590373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCF2E835-AC43-4E35-9207-C0340953C22F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCF2E835-AC43-4E35-9207-C0340953C22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCF2E835-AC43-4E35-9207-C0340953C22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCF2E835-AC43-4E35-9207-C0340953C22F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

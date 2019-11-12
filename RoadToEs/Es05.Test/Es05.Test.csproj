@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3AC05624-EF61-42DF-A9FF-77A882590373}</ProjectGuid>
+    <ProjectGuid>{FCF2E835-AC43-4E35-9207-C0340953C22F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Es04.Test</RootNamespace>
-    <AssemblyName>Es04.Test</AssemblyName>
+    <RootNamespace>Es05.Test</RootNamespace>
+    <AssemblyName>Es05.Test</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -45,6 +45,9 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -53,13 +56,17 @@
     <Compile Include="Infrastructure\ConcurrencyException.cs" />
     <Compile Include="Infrastructure\EventDescriptor.cs" />
     <Compile Include="Infrastructure\EventStore.cs" />
+    <Compile Include="Infrastructure\HandlerAlreadyUsedException.cs" />
+    <Compile Include="Infrastructure\Bus.cs" />
     <Compile Include="Src\Commands\CreateInventoryITem.cs" />
     <Compile Include="Src\Commands\ModifyItemName.cs" />
     <Compile Include="Src\Events\InventoryItemCreated.cs" />
     <Compile Include="Src\Events\ItemNameModified.cs" />
     <Compile Include="Src\InventoryAggregateRoot.cs" />
     <Compile Include="Src\InventoryCommandHandler.cs" />
-    <Compile Include="T07OptimisticLock.cs" />
+    <Compile Include="Src\Projections\ItemsProjection.cs" />
+    <Compile Include="T09Projections.cs" />
+    <Compile Include="T08TheBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -16,10 +16,22 @@ namespace Es04.Test.Infrastructure
 
         protected AggregateRoot()
         {
+            //NSFW
             _allApplyMethods = this.GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
                 .Where(m => m.Name == "Apply" && m.GetParameters().Count() == 1)
                 .ToArray();
+        }
+
+        private void InvokeApplyForEvent(object @event)
+        {
+            //NSFW
+            var realMethod = _allApplyMethods
+                    .FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
+            if (realMethod != null)
+            {
+                realMethod.Invoke(this, new object[] { @event });
+            }
         }
 
         public List<object> GetUncommittedChanges()
@@ -34,12 +46,7 @@ namespace Es04.Test.Infrastructure
 
         protected void ApplyChange(object @event,bool isNew = true)
         {
-            var realMethod = _allApplyMethods
-                .FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
-            if (realMethod != null)
-            {
-                realMethod.Invoke(this, new object[] { @event });
-            }
+            InvokeApplyForEvent(@event);
             if (isNew)
             {
                 _uncommittedChanges.Add(@event);
@@ -52,12 +59,7 @@ namespace Es04.Test.Infrastructure
             foreach (var @event in events)
             {
                 _version++;
-                var realMethod = _allApplyMethods
-                    .FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
-                if (realMethod != null)
-                {
-                    realMethod.Invoke(this, new object[] { @event });
-                }
+                InvokeApplyForEvent(@event);
             }
         }
     }

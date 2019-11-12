@@ -1,0 +1,35 @@
+Es01.Test
+	T01-Aggregate Root
+		Given a request to generate a new item
+		An event must be generated stating the execution of the request
+		It should be possible to retrieve such event
+		The Aggregate root should have the Id set, the sole property
+		It should be possible to clean the events
+	T02-Command Handler
+		Given a command
+		This should be translated to the execution of the Aggregate Root method
+		The events should be saved in order associated with the Aggregate id
+Es02.Test
+	T03-Events Storage
+		Whe extract the logic of events storage to a specific class
+	T04-Aggregate Modification requests
+		The aggregate should generate events for methods other than constructors
+		The aggregate should expose LoadFromHistory to load events from event store
+		The aggregate should expose empty constructor to generate a neutral aggregate
+		When LoadFromHistory is called
+			The events are cecked
+			If an event require a state modification (like the creation setting the id)
+				A suitable Apply(event) method is called
+		After LoadFromHistory only subsequent changes will result uncommitted
+Es03.Test
+	T05-Rehydration
+		The event store should rehydrate the aggregate with its events with LoadFromHistory
+		The aggregate will implement an interface with LoadFromHistory and the empty constructor
+	T06-Conflicts
+		Multiple commands from multiple sources can change the aggregate
+		Who will be saved? Who will do a phantom update??
+Es04.Test
+	T07OptimisticLock
+		We will introduce the versioning of events.
+		The event store will set the version inside its storage
+		But this is not yet enough		

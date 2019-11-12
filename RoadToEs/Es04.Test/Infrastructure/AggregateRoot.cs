@@ -34,7 +34,8 @@ namespace Es04.Test.Infrastructure
 
         protected void ApplyChange(object @event,bool isNew = true)
         {
-            var realMethod = _allApplyMethods.FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
+            var realMethod = _allApplyMethods
+                .FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
             if (realMethod != null)
             {
                 realMethod.Invoke(this, new object[] { @event });
@@ -51,7 +52,8 @@ namespace Es04.Test.Infrastructure
             foreach (var @event in events)
             {
                 _version++;
-                var realMethod = _allApplyMethods.FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
+                var realMethod = _allApplyMethods
+                    .FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
                 if (realMethod != null)
                 {
                     realMethod.Invoke(this, new object[] { @event });

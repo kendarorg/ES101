@@ -6,6 +6,7 @@ using Es01.Test.Src.Events;
 using Es02.Test.Infrastructure;
 using Es02.Test.Src.Commands;
 using Es02.Test.Src.Events;
+using Es04.Test.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Es04.Test
@@ -14,6 +15,28 @@ namespace Es04.Test
     public class T07OptimisticLock
     {
 
+        [TestMethod]
+        public void TheAggregateShouldSetTheVersionGivenTheHistory()
+        {
+            //Given
+            Guid id = Guid.NewGuid();
+            const string name = "test";
+            const string newName = "second";
+            var target = new InventoryAggregateRoot();
+
+            var history = new List<object>
+            {
+                new InventoryItemCreated(id,name),
+                new ModifyItemName(id,newName,0)
+            };
+
+            //When
+            target.LoadFromHistory(history);
+
+            //Then
+            Assert.AreEqual(1, target.Version);
+
+        }
 
         [TestMethod]
         public void ShouldSaveEventsOnMOdificationWithVersion()
@@ -27,7 +50,7 @@ namespace Es04.Test
 
             //When
             target.Handle(new CreateInventoryItem(id, name));
-            target.Handle(new ModifyItemName(id, newName));
+            target.Handle(new ModifyItemName(id, newName, 0));
 
 
             //Then
@@ -46,6 +69,24 @@ namespace Es04.Test
             Assert.AreEqual(id, itemNameModified.Id);
             Assert.AreEqual(newName, itemNameModified.NewName);
 
+        }
+
+
+        [TestMethod]
+        public void ShouldThrowExceptionWithWrongVersion()
+        {
+            //Given
+            Guid id = Guid.NewGuid();
+            const string name = "test";
+            const string newName = "second";
+            const int wrongExpectedVersion = 1;
+            var eventStore = new EventStore();
+            var target = new InventoryCommandHandler(eventStore);
+
+            //When
+            target.Handle(new CreateInventoryItem(id, name));
+            Assert.ThrowsException<ConcurrencyException>(()=>
+                target.Handle(new ModifyItemName(id, newName, wrongExpectedVersion)));
         }
     }
 }

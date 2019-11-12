@@ -1,4 +1,5 @@
 ﻿using Es03.Test.Infrastructure;
+using Es04.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,17 @@ namespace Es02.Test.Infrastructure
             Events = new List<EventDescriptor>();
         }
 
-        public void Save(Guid id, IEnumerable<object> events)
+        public void Save(Guid id, IEnumerable<object> events,int expectedVersion)
         {
             var lastStoredEvent = Events
                 .Where(e => e.Id == id)
                 .OrderByDescending(ev => ev.Version)
                 .FirstOrDefault();
             var lastVersion = lastStoredEvent == null ? -1 : lastStoredEvent.Version;
+            if(lastVersion!= expectedVersion)
+            {
+                throw new ConcurrencyException();
+            }
             foreach (var @event in events)
             {
                 Events.Add(new EventDescriptor

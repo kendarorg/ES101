@@ -12,6 +12,7 @@ namespace Es01.Test.Src
 {
     public class InventoryAggregateRoot : IAggregateRoot
     {
+        private int _version = -1;
         private List<object> _uncommittedChanges = new List<object>();
         
         public InventoryAggregateRoot(Guid id, string name)
@@ -22,6 +23,7 @@ namespace Es01.Test.Src
 
         public InventoryAggregateRoot()
         {
+
         }
 
         public void ChangeName(string newName)
@@ -30,6 +32,7 @@ namespace Es01.Test.Src
         }
 
         public Guid Id { get; private set; }
+        public int Version { get { return _version; } }
 
         public List<object> GetUncommittedChanges()
         {
@@ -45,6 +48,7 @@ namespace Es01.Test.Src
         {
             foreach (var evt in events)
             {
+                _version++;
                 if (evt is InventoryItemCreated)
                 {
                     Apply((InventoryItemCreated)evt);

@@ -30,6 +30,7 @@ Es03.Test
 		Who will be saved? Who will do a phantom update??
 Es04.Test
 	T07OptimisticLock
-		We will introduce the versioning of events.
-		The event store will set the version inside its storage
-		But this is not yet enough		
+		We will introduce the versioning inside the event storage
+		All commands will contain an "expected version" that is the version for which was read the aggregate
+		The aggregate will contain a version field internal
+		When the wrong version is required an exception will be thrown

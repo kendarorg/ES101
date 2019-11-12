@@ -22,7 +22,7 @@ namespace Es01.Test.Src
         public void Handle(CreateInventoryItem command)
         {
             var aggregate = new InventoryAggregateRoot(command.Id, command.Name);
-            _eventStore.Save(aggregate.Id, aggregate.GetUncommittedChanges());
+            _eventStore.Save(aggregate.Id, aggregate.GetUncommittedChanges(),-1);
             aggregate.ClearUncommittedChanges();
 
         }
@@ -31,7 +31,7 @@ namespace Es01.Test.Src
         {
             var aggregate = _eventStore.GetById<InventoryAggregateRoot>(command.Id);
             aggregate.ChangeName(command.NewName);
-            _eventStore.Save(aggregate.Id, aggregate.GetUncommittedChanges());
+            _eventStore.Save(aggregate.Id, aggregate.GetUncommittedChanges(),command.ExpectedVersion);
             aggregate.ClearUncommittedChanges();
 
         }

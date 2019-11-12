@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\ConcurrencyException.cs" />
     <Compile Include="Infrastructure\EventDescriptor.cs" />
     <Compile Include="Infrastructure\EventStore.cs" />
     <Compile Include="Infrastructure\IAggregateRoot.cs" />

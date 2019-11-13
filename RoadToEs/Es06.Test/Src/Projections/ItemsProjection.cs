@@ -16,7 +16,7 @@ namespace Es05.Test.Src.Projections
     }
     public class ItemsProjection
     {
-        private Dictionary<Guid, ItemsProjectionEntity> _items = new Dictionary<Guid, ItemsProjectionEntity>();
+        private readonly Dictionary<Guid, ItemsProjectionEntity> _items = new Dictionary<Guid, ItemsProjectionEntity>();
         public ItemsProjection(E05.Test.Infrastructure.Bus bus)
         {
             bus.RegisterTopic<InventoryItemCreated>(Handle);
@@ -34,10 +34,12 @@ namespace Es05.Test.Src.Projections
 
         private void Handle(InventoryItemCreated @event)
         {
-            _items[@event.Id] = new ItemsProjectionEntity();
-            _items[@event.Id].Id = @event.Id;
-            _items[@event.Id].Version = @event.Version;
-            _items[@event.Id].Name = @event.Name;
+            _items[@event.Id] = new ItemsProjectionEntity
+            {
+                Id = @event.Id,
+                Version = @event.Version,
+                Name = @event.Name
+            };
 
         }
 

@@ -49,6 +49,9 @@ Es06
 		The event store will store data in Json, how we could cope with this?
 		We will use the EventsSerializer (with some method to ease the testing)
 		We move the Apply search in its ApplyFinder singleton
+Es07
+	T11Snapshots
+		We first add the concept of Repository and Optimistic Repository
 
 
 		

@@ -9,11 +9,10 @@ namespace Es04.Test.Infrastructure
 {
     public class AggregateRoot
     {
-        private int _version = -1;
         private readonly List<IEvent> _uncommittedChanges = new List<IEvent>();
         
-        public Guid Id { get; protected set; }
-        public int Version { get { return _version; } }
+        public virtual Guid Id { get; protected set; }
+        public virtual int Version { get; protected set; }
 
         protected AggregateRoot()
         {
@@ -36,8 +35,8 @@ namespace Es04.Test.Infrastructure
             applyFinder.ApplyEvent(this, @event);
             if (isNew)
             {
-                _version++;
-                @event.Version = _version;
+                Version++;
+                @event.Version = Version;
                 _uncommittedChanges.Add(@event);
             }
         }
@@ -47,7 +46,7 @@ namespace Es04.Test.Infrastructure
             var applyFinder = ApplyFinder.GetApplyFinder();
             foreach (var @event in events)
             {
-                _version = @event.Version;
+                Version = @event.Version;
                 applyFinder.ApplyEvent(this, @event);
             }
         }

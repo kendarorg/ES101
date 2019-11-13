@@ -34,10 +34,12 @@ namespace Es05.Test.Src.Projections
 
         private void Handle(InventoryItemCreated @event)
         {
-            _items[@event.Id] = new ItemsProjectionEntity();
-            _items[@event.Id].Id = @event.Id;
-            _items[@event.Id].Version = @event.Version;
-            _items[@event.Id].Name = @event.Name;
+            _items[@event.Id] = new ItemsProjectionEntity
+            {
+                Id = @event.Id,
+                Version = @event.Version,
+                Name = @event.Name
+            };
 
         }
 

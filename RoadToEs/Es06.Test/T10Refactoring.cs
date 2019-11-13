@@ -10,17 +10,17 @@ using Es02.Test.Src.Events;
 using Es05.Test.Src.Projections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Es05.Test
+namespace Es06.Test
 {
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
     [TestClass]
-    public class T09Projections
+    public class T10Refactoring
     {
+
         [TestMethod]
         public void ShouldPopulateProjections()
         {
             //Given
-
             var events = new List<object>();
             Guid id = Guid.NewGuid();
             const string name = "test";
@@ -68,7 +68,6 @@ namespace Es05.Test
             Assert.AreEqual(newName, kvp.Name);
             Assert.AreEqual(1, kvp.Version);
         }
-
     }
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 }

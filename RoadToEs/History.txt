@@ -45,9 +45,10 @@ Es05.Test
 		will connect the projection to the bus
 		A 'lenient' version will be added to the events to allow the command side to know the version to start with when sending the command
 Es06
-	T10Serializers
+	T10Refactoring
 		The event store will store data in Json, how we could cope with this?
 		We will use the EventsSerializer (with some method to ease the testing)
+		We move the Apply search in its ApplyFinder singleton
 
 
 		

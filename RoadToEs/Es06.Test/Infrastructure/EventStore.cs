@@ -47,11 +47,13 @@ namespace Es02.Test.Infrastructure
             }
         }
 
-
         public T GetById<T>(Guid id) where T : AggregateRoot
         {
+            var eventsSerialzer = EventsSerializer.GetEventSerializer();
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));
-            var events = Events.Where(e => e.Id == id).Select(ev => (IEvent)ev.Data);
+            var events = Events
+                .Where(e => e.Id == id)
+                .Select(ev => eventsSerialzer.DeserializeEvent(ev.Data,ev.Type));
             aggregateRoot.LoadFromHistory(events);
             return aggregateRoot;
         }

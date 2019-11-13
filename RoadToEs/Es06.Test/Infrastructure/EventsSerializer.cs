@@ -13,9 +13,11 @@ namespace Es06.Test.Infrastructure
         public string Data { get; set; }
         public string Type { get; set; }
     }
+
     public class EventsSerializer
     {
-        private static EventsSerializer _serializer = new EventsSerializer();
+        private static EventsSerializer _serializer;
+        private readonly static object _lock = new object();
 
         public static void SetEventSerializer(EventsSerializer serializer)
         {
@@ -23,12 +25,21 @@ namespace Es06.Test.Infrastructure
         }
         public static EventsSerializer GetEventSerializer()
         {
+            if (_serializer != null)
+            {
+                return _serializer;
+            }
+            lock (_lock)
+            {
+                _serializer = new EventsSerializer();
+                _serializer.Initialize();
+            }
             return _serializer;
         }
 
-        private Dictionary<string, Type> _types = new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
 
-        public EventsSerializer()
+        private void Initialize()
         {
             foreach(var asm in AppDomain.CurrentDomain.GetAssemblies().Where(asm => !asm.IsDynamic))
             {
@@ -49,13 +60,13 @@ namespace Es06.Test.Infrastructure
             }
         }
 
-        public IEvent DeserializeEvent(string message,string name)
+        public virtual IEvent DeserializeEvent(string message,string name)
         {
             var type = _types[name];
             return (IEvent)JsonConvert.DeserializeObject(message, type);
         }
 
-        public SerializedEvent SerializeEvent(object message)
+        public virtual SerializedEvent SerializeEvent(object message)
         {
             var type = message.GetType().Name;
             var data = JsonConvert.SerializeObject(message);
@@ -63,7 +74,7 @@ namespace Es06.Test.Infrastructure
             {
                 Data = data,
                 Type = type
-            }
+            };
         }
     }
 }

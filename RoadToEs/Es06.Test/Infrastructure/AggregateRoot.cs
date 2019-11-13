@@ -1,4 +1,5 @@
 ﻿using Es05.Test.Infrastructure;
+using Es06.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,30 +10,14 @@ namespace Es04.Test.Infrastructure
     public class AggregateRoot
     {
         private int _version = -1;
-        private List<IEvent> _uncommittedChanges = new List<IEvent>();
-        private MethodInfo[] _allApplyMethods;
-
+        private readonly List<IEvent> _uncommittedChanges = new List<IEvent>();
+        
         public Guid Id { get; protected set; }
         public int Version { get { return _version; } }
 
         protected AggregateRoot()
         {
-            //NSFW
-            _allApplyMethods = this.GetType()
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
-                .Where(m => m.Name == "Apply" && m.GetParameters().Count() == 1)
-                .ToArray();
-        }
-
-        private void InvokeApplyForEvent(object @event)
-        {
-            //NSFW
-            var realMethod = _allApplyMethods
-                    .FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
-            if (realMethod != null)
-            {
-                realMethod.Invoke(this, new object[] { @event });
-            }
+            
         }
 
         public List<IEvent> GetUncommittedChanges()
@@ -47,7 +32,8 @@ namespace Es04.Test.Infrastructure
 
         protected void ApplyChange(IEvent @event,bool isNew = true)
         {
-            InvokeApplyForEvent(@event);
+            var applyFinder = ApplyFinder.GetApplyFinder();
+            applyFinder.ApplyEvent(this, @event);
             if (isNew)
             {
                 _version++;
@@ -58,11 +44,11 @@ namespace Es04.Test.Infrastructure
 
         public void LoadFromHistory(IEnumerable<IEvent> events)
         {
-            
+            var applyFinder = ApplyFinder.GetApplyFinder();
             foreach (var @event in events)
             {
                 _version = @event.Version;
-                InvokeApplyForEvent(@event);
+                applyFinder.ApplyEvent(this, @event);
             }
         }
     }

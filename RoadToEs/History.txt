@@ -51,7 +51,8 @@ Es06
 		We move the Apply search in its ApplyFinder singleton
 Es07
 	T11Snapshots
-		We first add the concept of Repository and Optimistic Repository
+		We add then the snapshot repository and all the connected logic
+		There will be a new Aggregate type the "SnapshottableAggregate"
 
 
 		

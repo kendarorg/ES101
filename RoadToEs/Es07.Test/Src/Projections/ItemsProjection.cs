@@ -16,7 +16,7 @@ namespace Es05.Test.Src.Projections
     }
     public class ItemsProjection
     {
-        private Dictionary<Guid, ItemsProjectionEntity> _items = new Dictionary<Guid, ItemsProjectionEntity>();
+        private readonly Dictionary<Guid, ItemsProjectionEntity> _items = new Dictionary<Guid, ItemsProjectionEntity>();
         public ItemsProjection(E05.Test.Infrastructure.Bus bus)
         {
             bus.RegisterTopic<InventoryItemCreated>(Handle);

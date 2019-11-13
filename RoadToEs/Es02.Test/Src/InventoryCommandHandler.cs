@@ -3,7 +3,6 @@ using Es02.Test.Infrastructure;
 
 namespace Es01.Test.Src
 {
-
     public class InventoryCommandHandler
     {
         private readonly EventStore _eventStore;
@@ -17,8 +16,6 @@ namespace Es01.Test.Src
         {
             var aggregate = new InventoryAggregateRoot(command.Id,command.Name);
             _eventStore.Save(aggregate.Id,aggregate.GetUncommittedChanges());
-            aggregate.ClearUncommittedChanges();
-            
         }
     }
 }

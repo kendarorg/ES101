@@ -17,8 +17,6 @@ namespace Es01.Test.Src
         {
             var aggregate = new InventoryAggregateRoot(command.Id,command.Name);
             _eventStore.Save(aggregate.Id,aggregate.GetUncommittedChanges());
-            aggregate.ClearUncommittedChanges();
-            
         }
     }
 }

@@ -6,9 +6,8 @@ namespace Es01.Test.Src
 {
     public class InventoryAggregateRoot
     {
-        private List<object> _uncommittedChanges = new List<object>();
+        private readonly List<object> _uncommittedChanges = new List<object>();
         
-
         public InventoryAggregateRoot(Guid id, string name)
         {
             Id = id;

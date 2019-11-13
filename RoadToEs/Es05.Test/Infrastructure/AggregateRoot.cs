@@ -9,7 +9,7 @@ namespace Es04.Test.Infrastructure
     public class AggregateRoot
     {
         private int _version = -1;
-        private List<IEvent> _uncommittedChanges = new List<IEvent>();
+        private readonly List<IEvent> _uncommittedChanges = new List<IEvent>();
         private MethodInfo[] _allApplyMethods;
 
         public Guid Id { get; protected set; }
@@ -58,7 +58,6 @@ namespace Es04.Test.Infrastructure
 
         public void LoadFromHistory(IEnumerable<IEvent> events)
         {
-            
             foreach (var @event in events)
             {
                 _version = @event.Version;

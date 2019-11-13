@@ -35,7 +35,6 @@ namespace Es02.Test.Infrastructure
             }
         }
 
-
         public T GetById<T>(Guid id) where T : AggregateRoot
         {
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));

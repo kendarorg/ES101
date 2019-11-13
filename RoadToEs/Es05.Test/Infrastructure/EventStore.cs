@@ -9,10 +9,9 @@ namespace Es02.Test.Infrastructure
 {
     public class EventStore
     {
+    	private readonly E05.Test.Infrastructure.Bus _bus;
         public List<EventDescriptor> Events { get; private set; }
-
-        private E05.Test.Infrastructure.Bus _bus;
-
+        
         public EventStore(E05.Test.Infrastructure.Bus bus)
         {
             Events = new List<EventDescriptor>();
@@ -42,7 +41,6 @@ namespace Es02.Test.Infrastructure
                 _bus.Send(@event);
             }
         }
-
 
         public T GetById<T>(Guid id) where T : AggregateRoot
         {

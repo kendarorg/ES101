@@ -12,9 +12,8 @@ namespace Es02.Test.Infrastructure
 {
     public class EventStore
     {
+		private readonly E05.Test.Infrastructure.Bus _bus;
         public List<EventDescriptor> Events { get; private set; }
-
-        private readonly E05.Test.Infrastructure.Bus _bus;
         private readonly SnapshotStore _snapshotStore;
 
         public EventStore(E05.Test.Infrastructure.Bus bus, SnapshotStore snapshotStore)
@@ -67,8 +66,7 @@ namespace Es02.Test.Infrastructure
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));
             IEnumerable<IEvent> events;
 
-            var snapshotData = _snapshotStore.GetSnapshot(id);
-            
+            var snapshotData = _snapshotStore.GetSnapshot(id);    
             if (snapshotData == null)
             {
                 events = Events

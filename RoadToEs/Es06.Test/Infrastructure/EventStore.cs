@@ -10,9 +10,8 @@ namespace Es02.Test.Infrastructure
 {
     public class EventStore
     {
-        public List<EventDescriptor> Events { get; private set; }
-
-        private E05.Test.Infrastructure.Bus _bus;
+        private readonly E05.Test.Infrastructure.Bus _bus;
+		public List<EventDescriptor> Events { get; private set; }
 
         public EventStore(E05.Test.Infrastructure.Bus bus)
         {

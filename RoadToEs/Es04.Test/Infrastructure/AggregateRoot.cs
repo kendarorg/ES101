@@ -8,7 +8,7 @@ namespace Es04.Test.Infrastructure
     public class AggregateRoot
     {
         private int _version = -1;
-        private List<object> _uncommittedChanges = new List<object>();
+        private readonly List<object> _uncommittedChanges = new List<object>();
         private MethodInfo[] _allApplyMethods;
 
         public Guid Id { get; protected set; }

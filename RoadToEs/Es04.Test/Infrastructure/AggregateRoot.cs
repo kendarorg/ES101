@@ -55,7 +55,6 @@ namespace Es04.Test.Infrastructure
 
         public void LoadFromHistory(IEnumerable<object> events)
         {
-            
             foreach (var @event in events)
             {
                 _version++;

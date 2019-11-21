@@ -26,21 +26,5 @@ namespace Es01.Test
             Assert.AreEqual(id, inventoryItemCreated.Id);
             Assert.AreEqual(name, inventoryItemCreated.Name);
         }
-
-        [TestMethod]
-        public void ShouldCleanUpEvents()
-        {
-            //Given
-            Guid id = Guid.NewGuid();
-            const string name = "test";
-            var target = new InventoryAggregateRoot(id, name);
-
-            //When
-            target.ClearUncommittedChanges();
-
-            //Then
-            var changes = target.GetUncommittedChanges();
-            Assert.AreEqual(0, changes.Count);
-        }
     }
 }

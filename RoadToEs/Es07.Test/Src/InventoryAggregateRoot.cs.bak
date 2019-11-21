@@ -18,8 +18,8 @@ namespace Es01.Test.Src
         public InventoryAggregateRoot(Guid id, string name)
         {
             _snapshot = new InventorySnapshot();
-            Id = id;
             Version = -1;
+            Id = id;
             ApplyChange(new InventoryItemCreated(id, name));
         }
 

@@ -7,12 +7,10 @@ namespace Es04.Test.Infrastructure
 {
     public class AggregateRoot
     {
-        private int _version = -1;
         private readonly List<object> _uncommittedChanges = new List<object>();
         private MethodInfo[] _allApplyMethods;
 
         public Guid Id { get; protected set; }
-        public int Version { get { return _version; } }
 
         protected AggregateRoot()
         {
@@ -39,11 +37,6 @@ namespace Es04.Test.Infrastructure
             return _uncommittedChanges;
         }
 
-        public void ClearUncommittedChanges()
-        {
-            _uncommittedChanges.Clear();
-        }
-
         protected void ApplyChange(object @event,bool isNew = true)
         {
             InvokeApplyForEvent(@event);
@@ -57,7 +50,6 @@ namespace Es04.Test.Infrastructure
         {
             foreach (var @event in events)
             {
-                _version++;
                 InvokeApplyForEvent(@event);
             }
         }

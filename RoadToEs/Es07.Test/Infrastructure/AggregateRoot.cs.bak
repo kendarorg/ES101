@@ -11,8 +11,8 @@ namespace Es04.Test.Infrastructure
     {
         private readonly List<IEvent> _uncommittedChanges = new List<IEvent>();
         
-        public Guid Id { get; protected set; }
-        public int Version { get; protected set; }
+        public virtual Guid Id { get; protected set; }
+        public virtual int Version { get; protected set; }
 
         protected AggregateRoot()
         {
@@ -37,9 +37,11 @@ namespace Es04.Test.Infrastructure
 
         public void LoadFromHistory(IEnumerable<IEvent> events)
         {
+            var applyFinder = ApplyFinder.GetApplyFinder();
             foreach (var @event in events)
             {
-                ApplyChange(@event, false);
+                Version = @event.Version;
+                applyFinder.ApplyEvent(this, @event);
             }
         }
     }

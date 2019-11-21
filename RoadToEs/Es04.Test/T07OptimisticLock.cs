@@ -16,29 +16,6 @@ namespace Es04.Test
     {
 
         [TestMethod]
-        public void TheAggregateShouldSetTheVersionGivenTheHistory()
-        {
-            //Given
-            Guid id = Guid.NewGuid();
-            const string name = "test";
-            const string newName = "second";
-            var target = new InventoryAggregateRoot();
-
-            var history = new List<object>
-            {
-                new InventoryItemCreated(id,name),
-                new ModifyItemName(id,newName,0)
-            };
-
-            //When
-            target.LoadFromHistory(history);
-
-            //Then
-            Assert.AreEqual(1, target.Version);
-
-        }
-
-        [TestMethod]
         public void ShouldSaveEventsOnMOdificationWithVersion()
         {
             //Given

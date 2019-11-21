@@ -16,7 +16,8 @@ namespace Es04.Test.Infrastructure
 
         protected AggregateRoot()
         {
-            Version = -1;            
+            Version = -1;
+            
         }
 
         public List<IEvent> GetUncommittedChanges()

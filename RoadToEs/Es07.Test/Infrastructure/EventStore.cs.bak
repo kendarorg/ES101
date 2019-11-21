@@ -12,9 +12,9 @@ namespace Es02.Test.Infrastructure
 {
     public class EventStore
     {
+    	private EventsSerializer _eventsSerializer;
         public List<EventDescriptor> Events { get; private set; }
         private readonly E05.Test.Infrastructure.Bus _bus;
-    	private EventsSerializer _eventsSerializer;
         private readonly SnapshotStore _snapshotStore;
 
         public EventStore(E05.Test.Infrastructure.Bus bus, EventsSerializer eventsSerializer, SnapshotStore snapshotStore)
@@ -40,7 +40,6 @@ namespace Es02.Test.Infrastructure
             foreach (var @event in events)
             {
                 var serializedEvent = _eventsSerializer.SerializeEvent(@event);
-                lastVersion = @event.Version;
                 Events.Add(new EventDescriptor
                 {
                     Version = @event.Version,

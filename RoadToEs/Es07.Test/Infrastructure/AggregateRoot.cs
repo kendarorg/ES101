@@ -16,7 +16,7 @@ namespace Es04.Test.Infrastructure
 
         protected AggregateRoot()
         {
-            
+                    
         }
 
         public List<IEvent> GetUncommittedChanges()
@@ -24,30 +24,22 @@ namespace Es04.Test.Infrastructure
             return _uncommittedChanges;
         }
 
-        public void ClearUncommittedChanges()
-        {
-            _uncommittedChanges.Clear();
-        }
-
         protected void ApplyChange(IEvent @event,bool isNew = true)
         {
             var applyFinder = ApplyFinder.GetApplyFinder();
+            @event.Version = ++Version;
             applyFinder.ApplyEvent(this, @event);
             if (isNew)
             {
-                Version++;
-                @event.Version = Version;
                 _uncommittedChanges.Add(@event);
             }
         }
 
         public void LoadFromHistory(IEnumerable<IEvent> events)
         {
-            var applyFinder = ApplyFinder.GetApplyFinder();
             foreach (var @event in events)
             {
-                Version = @event.Version;
-                applyFinder.ApplyEvent(this, @event);
+                ApplyChange(@event, false);
             }
         }
     }

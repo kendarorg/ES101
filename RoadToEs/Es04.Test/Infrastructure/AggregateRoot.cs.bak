@@ -1,5 +1,4 @@
-﻿using Es05.Test.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,11 +7,10 @@ namespace Es04.Test.Infrastructure
 {
     public class AggregateRoot
     {
-        private readonly List<IEvent> _uncommittedChanges = new List<IEvent>();
+        private List<object> _uncommittedChanges = new List<object>();
         private MethodInfo[] _allApplyMethods;
 
         public Guid Id { get; protected set; }
-        public int Version { get; protected set; }
 
         protected AggregateRoot()
         {
@@ -21,13 +19,11 @@ namespace Es04.Test.Infrastructure
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
                 .Where(m => m.Name == "Apply" && m.GetParameters().Count() == 1)
                 .ToArray();
-            Version = -1;
         }
 
-        private void InvokeApplyForEvent(IEvent @event)
+        private void InvokeApplyForEvent(object @event)
         {
             //NSFW
-            @event.Version = ++Version;
             var realMethod = _allApplyMethods
                     .FirstOrDefault(m => m.GetParameters()[0].ParameterType == @event.GetType());
             if (realMethod != null)
@@ -36,12 +32,12 @@ namespace Es04.Test.Infrastructure
             }
         }
 
-        public List<IEvent> GetUncommittedChanges()
+        public List<object> GetUncommittedChanges()
         {
             return _uncommittedChanges;
         }
 
-        protected void ApplyChange(IEvent @event,bool isNew = true)
+        protected void ApplyChange(object @event,bool isNew = true)
         {
             InvokeApplyForEvent(@event);
             if (isNew)
@@ -50,11 +46,11 @@ namespace Es04.Test.Infrastructure
             }
         }
 
-        public void LoadFromHistory(IEnumerable<IEvent> events)
+        public void LoadFromHistory(IEnumerable<object> events)
         {
             foreach (var @event in events)
             {
-                 ApplyChange(@event, false);
+                InvokeApplyForEvent(@event);
             }
         }
     }

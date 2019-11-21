@@ -1,13 +1,15 @@
 ﻿using Es01.Test.Src.Events;
 using Es02.Test.Src.Events;
+using Es03.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
 
 namespace Es01.Test.Src
 {
-    public class InventoryAggregateRoot
+    public class InventoryAggregateRoot : IAggregateRoot
     {
         private readonly List<object> _uncommittedChanges = new List<object>();
+
 
         public InventoryAggregateRoot(Guid id, string name)
         {

@@ -22,14 +22,14 @@ namespace Es01.Test.Src
         public void Handle(CreateInventoryItem command)
         {
             var aggregate = new InventoryAggregateRoot(command.Id, command.Name);
-            _eventStore.Save(aggregate,-1);
+            _eventStore.Save(aggregate, -1);
         }
 
         public void Handle(ModifyItemName command)
         {
             var aggregate = _eventStore.GetById<InventoryAggregateRoot>(command.Id);
             aggregate.ChangeName(command.NewName);
-            _eventStore.Save(aggregate,command.ExpectedVersion);
+            _eventStore.Save(aggregate, command.ExpectedVersion);
         }
     }
 }

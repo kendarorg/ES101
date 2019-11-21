@@ -10,13 +10,15 @@ namespace Es02.Test.Infrastructure
 {
     public class EventStore
     {
+        public List<EventDescriptor> Events { get; private set; }
         private readonly E05.Test.Infrastructure.Bus _bus;
-		public List<EventDescriptor> Events { get; private set; }
+    	private readonly EventsSerializer _eventsSerializer;
 
-        public EventStore(E05.Test.Infrastructure.Bus bus)
+        public EventStore(E05.Test.Infrastructure.Bus bus, EventsSerializer eventsSerializer)
         {
             Events = new List<EventDescriptor>();
             _bus = bus;
+            _eventsSerializer = eventsSerializer;
         }
 
         public void Save(Guid id, IEnumerable<IEvent> events, int expectedVersion)
@@ -25,16 +27,14 @@ namespace Es02.Test.Infrastructure
                 .Where(e => e.Id == id)
                 .OrderByDescending(ev => ev.Version)
                 .FirstOrDefault();
-            var lastStoredVersion = lastStoredEvent == null ? -1 : lastStoredEvent.Version;
-            var lastEventVersion = events.First().Version - 1;
-            if (lastEventVersion != lastStoredVersion || expectedVersion != lastStoredVersion)
+            var lastVersion = lastStoredEvent == null ? -1 : lastStoredEvent.Version;
+            if (lastVersion != expectedVersion)
             {
                 throw new ConcurrencyException();
             }
-            var eventSerializer = EventsSerializer.GetEventSerializer();
             foreach (var @event in events)
             {
-                var serializedEvent = eventSerializer.SerializeEvent(@event);
+                var serializedEvent = _eventsSerializer.SerializeEvent(@event);
                 Events.Add(new EventDescriptor
                 {
                     Version = @event.Version,
@@ -48,11 +48,10 @@ namespace Es02.Test.Infrastructure
 
         public T GetById<T>(Guid id) where T : AggregateRoot
         {
-            var eventsSerialzer = EventsSerializer.GetEventSerializer();
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));
             var events = Events
                 .Where(e => e.Id == id)
-                .Select(ev => eventsSerialzer.DeserializeEvent(ev.Data,ev.Type));
+                .Select(ev => _eventsSerializer.DeserializeEvent(ev.Data,ev.Type));
             aggregateRoot.LoadFromHistory(events);
             return aggregateRoot;
         }

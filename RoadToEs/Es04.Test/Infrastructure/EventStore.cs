@@ -8,19 +8,20 @@ namespace Es02.Test.Infrastructure
     public class EventStore
     {
         public List<EventDescriptor> Events { get; private set; }
+        
         public EventStore()
         {
             Events = new List<EventDescriptor>();
         }
 
-        public void Save(Guid id, IEnumerable<object> events,int expectedVersion)
+        public void Save(Guid id, IEnumerable<object> events, int expectedVersion)
         {
             var lastStoredEvent = Events
                 .Where(e => e.Id == id)
                 .OrderByDescending(ev => ev.Version)
                 .FirstOrDefault();
             var lastVersion = lastStoredEvent == null ? -1 : lastStoredEvent.Version;
-            if(lastVersion!= expectedVersion)
+            if (lastVersion != expectedVersion)
             {
                 throw new ConcurrencyException();
             }

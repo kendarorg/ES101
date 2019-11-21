@@ -8,6 +8,7 @@ namespace Es02.Test.Infrastructure
     public class EventStore
     {
         public List<EventDescriptor> Events { get; private set; }
+        
         public EventStore()
         {
             Events = new List<EventDescriptor>();

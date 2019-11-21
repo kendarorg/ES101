@@ -18,6 +18,7 @@ namespace Es01.Test.Src
 
         public InventoryAggregateRoot()
         {
+        	
         }
 
         public void ChangeName(string newName)
@@ -30,11 +31,6 @@ namespace Es01.Test.Src
         public List<object> GetUncommittedChanges()
         {
             return _uncommittedChanges;
-        }
-
-        public void ClearUncommittedChanges()
-        {
-            _uncommittedChanges.Clear();
         }
 
         public void LoadFromHistory(IEnumerable<object> events)

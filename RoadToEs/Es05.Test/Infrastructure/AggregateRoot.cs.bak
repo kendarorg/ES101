@@ -8,7 +8,7 @@ namespace Es04.Test.Infrastructure
 {
     public class AggregateRoot
     {
-        private readonly List<IEvent> _uncommittedChanges = new List<IEvent>();
+        private List<IEvent> _uncommittedChanges = new List<IEvent>();
         private MethodInfo[] _allApplyMethods;
 
         public Guid Id { get; protected set; }

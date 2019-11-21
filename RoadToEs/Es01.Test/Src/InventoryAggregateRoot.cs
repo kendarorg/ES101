@@ -6,8 +6,9 @@ namespace Es01.Test.Src
 {
     public class InventoryAggregateRoot
     {
-        private readonly List<object> _uncommittedChanges = new List<object>();
+        private List<object> _uncommittedChanges = new List<object>();
         
+
         public InventoryAggregateRoot(Guid id, string name)
         {
             Id = id;
@@ -19,11 +20,6 @@ namespace Es01.Test.Src
         public List<object> GetUncommittedChanges()
         {
             return _uncommittedChanges;
-        }
-
-        public void ClearUncommittedChanges()
-        {
-            _uncommittedChanges.Clear();
         }
     }
 }

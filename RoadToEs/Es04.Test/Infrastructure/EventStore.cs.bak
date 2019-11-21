@@ -1,6 +1,4 @@
-﻿using E05.Test.Infrastructure;
-using Es04.Test.Infrastructure;
-using Es05.Test.Infrastructure;
+﻿using Es04.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +8,13 @@ namespace Es02.Test.Infrastructure
     public class EventStore
     {
         public List<EventDescriptor> Events { get; private set; }
-        private readonly E05.Test.Infrastructure.Bus _bus;
-
-        public EventStore(E05.Test.Infrastructure.Bus bus)
+        
+        public EventStore()
         {
             Events = new List<EventDescriptor>();
-            _bus = bus;
         }
 
-        public void Save(Guid id, IEnumerable<IEvent> events, int expectedVersion)
+        public void Save(Guid id, IEnumerable<object> events, int expectedVersion)
         {
             var lastStoredEvent = Events
                 .Where(e => e.Id == id)
@@ -33,18 +29,18 @@ namespace Es02.Test.Infrastructure
             {
                 Events.Add(new EventDescriptor
                 {
-                	Version = @event.Version,
+                    Version = ++lastVersion,
                     Id = id,
                     Data = @event
                 });
-                _bus.Send(@event);
             }
         }
+
 
         public T GetById<T>(Guid id) where T : AggregateRoot
         {
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));
-            var events = Events.Where(e=> e.Id == id).Select(ev=>(IEvent)ev.Data);
+            var events = Events.Where(e => e.Id == id).Select(ev=>ev.Data);
             aggregateRoot.LoadFromHistory(events);
             return aggregateRoot;
         }

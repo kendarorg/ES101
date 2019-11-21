@@ -8,6 +8,7 @@ using Es02.Test.Infrastructure;
 using Es02.Test.Src.Commands;
 using Es02.Test.Src.Events;
 using Es05.Test.Src.Projections;
+using Es06.Test.Infrastructure;
 using Es07.Test.Infrastructure;
 using Es07.Test.Src;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +31,8 @@ namespace Es07.Test
             const string newName = "second";
             var bus = new E05.Test.Infrastructure.Bus();
             var snapshotStore = new SnapshotStore();
-            var eventStore = new EventStore(bus, snapshotStore);
+            var eventsSerializer = EventsSerializer.GetEventSerializer();
+            var eventStore = new EventStore(bus, eventsSerializer, snapshotStore);
             var commandHandler = new InventoryCommandHandler(bus, eventStore);
             var projection = new ItemsProjection(bus);
 
@@ -56,7 +58,8 @@ namespace Es07.Test
             const string newName = "second";
             var bus = new E05.Test.Infrastructure.Bus();
             var snapshotStore = new SnapshotStore();
-            var eventStore = new EventStore(bus, snapshotStore);
+            var eventsSerializer = EventsSerializer.GetEventSerializer();
+            var eventStore = new EventStore(bus, eventsSerializer, snapshotStore);
             var commandHandler = new InventoryCommandHandler(bus, eventStore);
             var projection = new ItemsProjection(bus);
             bus.Send(new CreateInventoryItem(id, name));
@@ -85,7 +88,8 @@ namespace Es07.Test
             const string name = "test";
             var bus = new E05.Test.Infrastructure.Bus();
             var snapshotStore = new SnapshotStore();
-            var eventStore = new EventStore(bus, snapshotStore);
+            var eventsSerializer = EventsSerializer.GetEventSerializer();
+            var eventStore = new EventStore(bus, eventsSerializer, snapshotStore);
             var commandHandler = new InventoryCommandHandler(bus, eventStore);
             var projection = new ItemsProjection(bus);
             bus.Send(new CreateInventoryItem(id, name));

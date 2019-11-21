@@ -8,6 +8,7 @@ using Es02.Test.Infrastructure;
 using Es02.Test.Src.Commands;
 using Es02.Test.Src.Events;
 using Es05.Test.Src.Projections;
+using Es06.Test.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Es06.Test
@@ -26,7 +27,8 @@ namespace Es06.Test
             const string name = "test";
             const string newName = "second";
             var bus = new E05.Test.Infrastructure.Bus();
-            var eventStore = new EventStore(bus);
+            var eventsSerializer = EventsSerializer.GetEventSerializer();
+            var eventStore = new EventStore(bus, eventsSerializer);
             var commandHandler = new InventoryCommandHandler(bus, eventStore);
             var projection = new ItemsProjection(bus);
 
@@ -51,7 +53,8 @@ namespace Es06.Test
             const string name = "test";
             const string newName = "second";
             var bus = new E05.Test.Infrastructure.Bus();
-            var eventStore = new EventStore(bus);
+            var eventsSerializer = EventsSerializer.GetEventSerializer();
+            var eventStore = new EventStore(bus, eventsSerializer);
             var commandHandler = new InventoryCommandHandler(bus, eventStore);
             var projection = new ItemsProjection(bus);
             bus.Send(new CreateInventoryItem(id, name));

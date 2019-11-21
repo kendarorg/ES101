@@ -16,6 +16,7 @@ namespace Es01.Test.Src
 
         public InventoryAggregateRoot()
         {
+
         }
 
         public void ChangeName(string newName)

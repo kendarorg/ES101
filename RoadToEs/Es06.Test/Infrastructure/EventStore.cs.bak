@@ -1,6 +1,7 @@
 ﻿using E05.Test.Infrastructure;
 using Es04.Test.Infrastructure;
 using Es05.Test.Infrastructure;
+using Es06.Test.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,13 @@ namespace Es02.Test.Infrastructure
     {
         public List<EventDescriptor> Events { get; private set; }
         private readonly E05.Test.Infrastructure.Bus _bus;
+    	private EventsSerializer _eventsSerializer;
 
-        public EventStore(E05.Test.Infrastructure.Bus bus)
+        public EventStore(E05.Test.Infrastructure.Bus bus, EventsSerializer eventsSerializer)
         {
             Events = new List<EventDescriptor>();
             _bus = bus;
+            _eventsSerializer = eventsSerializer;
         }
 
         public void Save(Guid id, IEnumerable<IEvent> events, int expectedVersion)
@@ -31,11 +34,13 @@ namespace Es02.Test.Infrastructure
             }
             foreach (var @event in events)
             {
+                var serializedEvent = _eventsSerializer.SerializeEvent(@event);
                 Events.Add(new EventDescriptor
                 {
-                	Version = @event.Version,
+                    Version = @event.Version,
                     Id = id,
-                    Data = @event
+                    Data = serializedEvent.Data,
+                    Type = serializedEvent.Type
                 });
                 _bus.Send(@event);
             }
@@ -44,7 +49,9 @@ namespace Es02.Test.Infrastructure
         public T GetById<T>(Guid id) where T : AggregateRoot
         {
             var aggregateRoot = (T)Activator.CreateInstance(typeof(T));
-            var events = Events.Where(e=> e.Id == id).Select(ev=>(IEvent)ev.Data);
+            var events = Events
+                .Where(e => e.Id == id)
+                .Select(ev => _eventsSerializer.DeserializeEvent(ev.Data,ev.Type));
             aggregateRoot.LoadFromHistory(events);
             return aggregateRoot;
         }

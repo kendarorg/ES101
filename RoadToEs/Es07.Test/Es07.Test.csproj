@@ -72,7 +72,7 @@
     <Compile Include="Src\InventoryCommandHandler.cs" />
     <Compile Include="Src\InventorySnapshot.cs" />
     <Compile Include="Src\Projections\ItemsProjection.cs" />
-    <Compile Include="T10Snapshot.cs" />
+    <Compile Include="T11Snapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

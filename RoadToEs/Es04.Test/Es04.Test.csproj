@@ -59,7 +59,7 @@
     <Compile Include="Src\Events\ItemNameModified.cs" />
     <Compile Include="Src\InventoryAggregateRoot.cs" />
     <Compile Include="Src\InventoryCommandHandler.cs" />
-    <Compile Include="T07OptimisticLock.cs" />
+    <Compile Include="T07EventsVersioning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
